@@ -16,7 +16,8 @@ class Contact extends Model
         'address',
         'address_complement',
         'lat',
-        'lon'
+        'lon',
+        'user_id'
     ];
 
     public function rules() {
