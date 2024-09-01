@@ -18,9 +18,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('/contact', [ContactController::class, 'index']);
         Route::get('/contact/{id}', [ContactController::class, 'show']);
-        Route::get('/contact/my-list', [ContactController::class, 'showByUser']);
+        Route::get('/my-list', [ContactController::class, 'showByUser']);
         Route::post('/contact', [ContactController::class, 'store']);
-        Route::put('contact/{id}', [ContactController::class, 'update']);
+        Route::put('/contact/{id}', [ContactController::class, 'update']);
         Route::delete('/contact/{id}', [ContactController::class, 'destroy']);
     });
 });

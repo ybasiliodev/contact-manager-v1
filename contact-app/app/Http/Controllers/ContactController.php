@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use App\Services\UserService;
+use App\Services\ContactService;
 
 class ContactController extends Controller
 {
-    public function __construct(Contact $contact)
+    public function __construct(Contact $contact, ContactService $contactService)
     {
         $this->contact = $contact;
+        $this->contactService = $contactService;
     }
 
     public function index()
@@ -25,19 +26,10 @@ class ContactController extends Controller
         return response()->json(['status' => true,'data' => $contact], 200);
     }
 
-    public function showByUser($id)
+    public function showByUser(Request $request)
     {
-        $contact = $this->contact->findOrFail($id);
+        $contact = $this->contactService->filterContactResults($request, $this->contact);
         return response()->json(['status' => true,'data' => $contact], 200);
-    }
-
-    public function store(Request $request)
-    {
-        $object = new UserService();
-        $request->request->add(['user_id' => $object->getLoggedUserId()]);
-        $request->validate($this->contact->rules(), $this->contact->feedback());
-        $contact = $this->contact->create($request->all());
-        return response()->json(['status' => true,'data' => "ok"], 201);
     }
 
     public function update(Request $request, $id)
