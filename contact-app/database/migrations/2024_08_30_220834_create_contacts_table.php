@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('name')->nullable(false);
             $table->string('social_number')->unique();
             $table->string('phone')->nullable(false);
+            $table->string('postal_code')->nullable(false);
             $table->string('address')->nullable(false);
             $table->string('address_complement')->nullable();
             $table->string('lat');
             $table->string('lon');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

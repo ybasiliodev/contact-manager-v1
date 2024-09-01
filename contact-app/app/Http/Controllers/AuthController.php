@@ -33,6 +33,13 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function validateUser($credentials) {
+        if (auth()->validate($credentials)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Get the authenticated User.
      *

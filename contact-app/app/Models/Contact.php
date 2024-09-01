@@ -13,6 +13,7 @@ class Contact extends Model
         'name',
         'social_number',
         'phone',
+        'postal_code',
         'address',
         'address_complement',
         'lat',
@@ -24,9 +25,10 @@ class Contact extends Model
         return [
             'name' => 'required|string|max:255',
             'social_number' => 'required|cpf|unique:contacts,social_number',
-            'phone' => 'required|Celular',
+            'phone' => 'required|celular_com_ddd',
+            'postal_code' => 'required|formato_cep',
             'address' => 'required|string|max:255',
-            'address_complement' => 'string|max:255',
+            'address_complement' => 'string|max:255|nullable',
             'lat' => 'required|string',
             'lon' => 'required|string',
             'user_id' => 'required|integer'
@@ -40,8 +42,13 @@ class Contact extends Model
             'social_number.cpf' => 'Insira um número de CPF válido',
             'social_number.unique' => 'O número de CPF já está sendo utilizado',
             'phone.required' => 'O campo telefone é obrigatório',
-            'phone.Celular' => 'Insira um número de telefone válido',
-            'phone.required' => 'O campo endereço é obrigatório',
+            'phone.celular_com_ddd' => 'Insira um número de telefone válido',
+            'postal_code.required' => 'O campo CEP é obrigatório',
+            'postal_code.formato_cep' => 'Insira um número de CEP válido',
+            'address.required' => 'O campo endereço é obrigatório',
+            'lat.required' => 'O campo lat é obrigatório',
+            'lng.required' => 'O campo lng é obrigatório',
+            'user_id.required' => 'O campo user_id é obrigatório',
         ];
     }
 

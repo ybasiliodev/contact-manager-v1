@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Services\UserService;
 
 class ContactController extends Controller
 {
@@ -24,11 +25,19 @@ class ContactController extends Controller
         return response()->json(['status' => true,'data' => $contact], 200);
     }
 
+    public function showByUser($id)
+    {
+        $contact = $this->contact->findOrFail($id);
+        return response()->json(['status' => true,'data' => $contact], 200);
+    }
+
     public function store(Request $request)
     {
+        $object = new UserService();
+        $request->request->add(['user_id' => $object->getLoggedUserId()]);
         $request->validate($this->contact->rules(), $this->contact->feedback());
         $contact = $this->contact->create($request->all());
-        return response()->json(['status' => true,'data' => $contact], 201);
+        return response()->json(['status' => true,'data' => "ok"], 201);
     }
 
     public function update(Request $request, $id)
