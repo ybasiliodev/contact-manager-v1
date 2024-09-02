@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GeoController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -22,5 +23,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/contact', [ContactController::class, 'store']);
         Route::put('/contact/{id}', [ContactController::class, 'update']);
         Route::delete('/contact/{id}', [ContactController::class, 'destroy']);
+
+        Route::group(['prefix' => 'geo'], function () {
+            Route::get('/locate/{postal_code}', [GeoController::class, 'showAddress']);
+            Route::get('/cordinates', [GeoController::class, 'showCordinates']);
+            Route::get('/map', [GeoController::class, 'showMap']);
+        });
     });
 });
