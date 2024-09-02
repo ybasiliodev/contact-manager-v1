@@ -1,0 +1,558 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Contacts",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Autorização"
+                ],
+                "summary": "Obter token por email e senha cadastrados",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "access_token"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/v1/contact/{id}": {
+            "get": {
+                "tags": [
+                    "Contato"
+                ],
+                "summary": "Buscar contato por id",
+                "operationId": "getContact",
+                "responses": {
+                    "200": {
+                        "description": "Retorna endereço"
+                    },
+                    "404": {
+                        "description": "Contato não encontrado!"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Contato"
+                ],
+                "summary": "Atualiza contato existente",
+                "operationId": "updateContact",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "social_number",
+                                    "phone",
+                                    "postal_code",
+                                    "city",
+                                    "state",
+                                    "address",
+                                    "lat",
+                                    "lon"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "social_number": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "address_complement": {
+                                        "type": "string"
+                                    },
+                                    "lat": {
+                                        "type": "string"
+                                    },
+                                    "lon": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contato atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Contato não encontrado!"
+                    },
+                    "422": {
+                        "description": "Campos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Contato"
+                ],
+                "summary": "Apagar contato por id",
+                "operationId": "deleteContact",
+                "responses": {
+                    "204": {
+                        "description": "Contato excluido com sucesso"
+                    },
+                    "404": {
+                        "description": "Contato não encontrado!"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/contact": {
+            "post": {
+                "tags": [
+                    "Contato"
+                ],
+                "summary": "Criar novo contato",
+                "operationId": "createContact",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "social_number",
+                                    "phone",
+                                    "postal_code",
+                                    "city",
+                                    "state",
+                                    "address",
+                                    "lat",
+                                    "lon"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "social_number": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "address_complement": {
+                                        "type": "string"
+                                    },
+                                    "lat": {
+                                        "type": "string"
+                                    },
+                                    "lon": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contato Incluido com sucesso"
+                    },
+                    "422": {
+                        "description": "Campos inválidos"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/contact/list": {
+            "get": {
+                "tags": [
+                    "Contato"
+                ],
+                "summary": "Buscar todos os contatos do usuário por paginação e ordenação",
+                "operationId": "showByUser",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Quantos contatos por página (padrão 10)"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filtrar por nome ou parte do nome"
+                    },
+                    {
+                        "name": "cpf",
+                        "in": "query",
+                        "description": "Filtrar por cpf ou parte do cpf"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Por qual dos campos vai ser ordenado (name ou social_number separados por virgula e com - para desc)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna lista de usuários"
+                    },
+                    "404": {
+                        "description": "Contato não encontrado!"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/geo/cordinates": {
+            "get": {
+                "tags": [
+                    "GeoLocation"
+                ],
+                "summary": "Buscar Endereço por cep",
+                "operationId": "getAddressData",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "address"
+                                ],
+                                "properties": {
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna as cordenadas"
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/geo/locate/{postal_code}": {
+            "get": {
+                "tags": [
+                    "GeoLocation"
+                ],
+                "summary": "Recupera a latitute e longitude do endereço digitado",
+                "operationId": "getGeoData",
+                "responses": {
+                    "200": {
+                        "description": "Retorna usuário"
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/geo/map": {
+            "get": {
+                "tags": [
+                    "GeoLocation"
+                ],
+                "summary": "Retorna um mapa com o pin marcado através da latitude e longitude",
+                "operationId": "getMap",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "lat",
+                                    "lon"
+                                ],
+                                "properties": {
+                                    "lat": {
+                                        "type": "string"
+                                    },
+                                    "lon": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna imagem"
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Criar novo usuário",
+                "operationId": "createUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Usuário criado com sucesso"
+                    },
+                    "422": {
+                        "description": "Campos inválidos"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Excluir usuário",
+                "operationId": "deleteUserByPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Usuário excluído com sucesso"
+                    },
+                    "400": {
+                        "description": "O campo senha é obrigatório"
+                    },
+                    "404": {
+                        "description": "Senha inválida!"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recover": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Recuperar usuário por email cadastrado",
+                "operationId": "getPasswordByEmail",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Recuperação de senha enviada no e-mail cadastrado"
+                    },
+                    "400": {
+                        "description": "O campo e-mail é obrigatório"
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado!"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/logout": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Fazer o logout",
+                "operationId": "logoutUser",
+                "responses": {
+                    "200": {
+                        "description": "Usuário Deslogado!"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based Based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autorização",
+            "description": "Autorização"
+        },
+        {
+            "name": "Contato",
+            "description": "Contato"
+        },
+        {
+            "name": "GeoLocation",
+            "description": "GeoLocation"
+        },
+        {
+            "name": "Usuário",
+            "description": "Usuário"
+        }
+    ]
+}

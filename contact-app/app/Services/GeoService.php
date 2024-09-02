@@ -31,8 +31,8 @@ class GeoService
 
         $response = Http::withQueryParameters([
             "center" => "{$cordinates['lat']},{$cordinates['lon']}",
-            "zoom" => $request->input('zoom','12'),
-            "size" => $request->input('tamanho','400x400'),
+            "zoom" => 'zoom','12',
+            "size" => '400x400',
             "markers" => "size:mid|color:red|{$cordinates['lat']},{$cordinates['lon']}",
             "key" => config('custom.geo_key')
         ])

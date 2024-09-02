@@ -18,6 +18,16 @@ class ContactService
         $this->userService = $userService;
     }
 
+    public function getContact($id) {
+        $contact = $this->validateContact($id);
+        
+        if($contact->isEmpty()) {
+            return ["message" => "Contato não encontrado!", "status" => 404];
+        }
+
+        return ["message" => $contact, "status" => 200];
+    }
+
     public function createContact(Request $request) {
         $request->request->add(['user_id' => $this->userService->getLoggedUserId()]);
         $request->validate($this->contact->rules(), $this->contact->feedback());
@@ -28,20 +38,20 @@ class ContactService
 
     public function updateContact(Request $request, $id) {
         $request->request->add(['user_id' => $this->userService->getLoggedUserId()]);
-        $contact = $this->getContact($id);
+        $contact = $this->validateContact($id);
         
         if($contact === null) {
             return ["message" => "Contato não encontrado!", "status" => 404];
         }
 
         $request->validate($this->contact->updateRules($id), $this->contact->feedback());
-        $contact->update($request->all());
+        $contact->first()->update($request->all());
 
         return ["message" => "Contato atualizado com sucesso", "status" => 200];
     }
 
     public function deleteContact($id) {
-        $contact = $this->getContact($id);
+        $contact = $this->validateContact($id);
         
         if($contact === null) {
             return ["message" => "Contato não encontrado!", "status" => 404];
@@ -78,7 +88,7 @@ class ContactService
         return $contact->paginate($perPage);
     }
 
-    private function getContact($id) {
-        return $this->contact->where('user_id', $this->userService->getLoggedUserId())->where('id', $id);
+    private function validateContact($id) {
+        return $this->contact->where('user_id', $this->userService->getLoggedUserId())->where('id', $id)->get();
     }
 }

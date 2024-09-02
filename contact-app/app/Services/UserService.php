@@ -51,7 +51,7 @@ class UserService
         $user = $this->user->where('email', $request->input('email'))->get();
 
         if (!$user->isEmpty()) {
-            return ['message' => 'recuperação de senha enviada no e-mail cadastrado', "status" => 201];
+            return ['message' => 'Recuperação de senha enviada no e-mail cadastrado', "status" => 200];
         }
 
         return ['message' => 'Usuário não encontrado', "status" => 404];
