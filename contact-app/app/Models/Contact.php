@@ -26,7 +26,7 @@ class Contact extends Model
     public function rules() {
         return [
             'name' => 'required|string|max:255',
-            'social_number' => "required|cpf|unique:contacts,social_number,$id",
+            'social_number' => "required|cpf|unique:contacts,social_number",
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'phone' => 'required|celular_com_ddd',

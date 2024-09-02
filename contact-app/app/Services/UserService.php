@@ -58,6 +58,6 @@ class UserService
     }
 
     private function validateLoggedUserPassword($password) {
-        return $this->authController->validateUser(["email" => $object->me()->getData()->email, "password" => $password]);
+        return $this->authController->validateUser(["email" => $this->authController->me()->getData()->email, "password" => $password]);
     }
 }

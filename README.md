@@ -33,6 +33,8 @@ Para inicar o projeto, basta rodar os comandos abaixo em um ambiente com docker 
 
 O endereço padrão é http://localhost:8080/
 
+### IMPORTANTE!!! - Remover o comentário da propriedade GOOGLE_MAPS_API= e inserir a chave do google maps gerada
+
 ## Documentação da API
 
 A Documentação está disponivel no endpoint http://localhost:8080/api/documentation

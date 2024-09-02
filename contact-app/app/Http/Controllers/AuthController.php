@@ -67,7 +67,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->logout();
+        auth()->invalidate(true);
 
         return response()->json('Usuário Deslogado!', 200);
     }
@@ -84,5 +84,10 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    public function guard()
+    {
+        return Auth::guard();
     }
 }
