@@ -15,18 +15,18 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->userService->createUser($request, $this->user);
+        $data = $this->userService->createUser($request);
         return response()->json($data['message'], $data['status']);
     }
 
     public function destroy(Request $request)
     {
-        $data = $this->userService->deleteUserByPassword($request, $this->user);
+        $data = $this->userService->deleteUserByPassword($request);
         return response()->json($data['message'], $data['status']);
     }
 
     public function recover(Request $request) {
-        $data = $this->userService->getPasswordByEmail($request, $this->user);
+        $data = $this->userService->getPasswordByEmail($request);
         return response()->json($data['message'], $data['status']);
     }
 

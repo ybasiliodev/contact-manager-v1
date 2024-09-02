@@ -21,8 +21,7 @@ class UserTest extends TestCase
 
         $newUser = ["name" => "new user 2","email" => "muy@gmail.com","password" => "abc123"];
 
-        $this->json('post', '/api/v1/user', $newUser)
-         ->assertStatus(201);
+        $this->json('post', '/api/v1/user', $newUser)->assertStatus(201);
     }
 
     public function test_route_login() : void
