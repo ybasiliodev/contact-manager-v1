@@ -14,11 +14,10 @@ class GeoService
             "key" => config('custom.geo_key')
         ])
         ->withHeaders(['Content-Type' => 'application/json',])
-        ->get('https://maps.googleapis.com/maps/api/geocode/json');
+        ->get('https://maps.googleapis.com/maps/api/geocode/json')->json();
 
-        if ($response->status() == 200) {
-            $data = $response->json();
-            $cordinates = $data['results'][0]['geometry']['location'];
+        if (!empty($response) && $response['status'] == 'OK') {
+            $cordinates = $response['results'][0]['geometry']['location'];
             return ['data' => $cordinates, "status" => 200];
         }
 
@@ -31,7 +30,7 @@ class GeoService
 
         $response = Http::withQueryParameters([
             "center" => "{$cordinates['lat']},{$cordinates['lon']}",
-            "zoom" => 'zoom','12',
+            "zoom" => 'zoom','15',
             "size" => '400x400',
             "markers" => "size:mid|color:red|{$cordinates['lat']},{$cordinates['lon']}",
             "key" => config('custom.geo_key')
