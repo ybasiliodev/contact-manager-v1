@@ -28,6 +28,10 @@ Para inicar o projeto, basta rodar os comandos abaixo em um ambiente com docker 
   docker compose up -d
   docker exec php-server composer install
   docker exec php-server php artisan config:cache
+```
+Por fim, rodar as migrations (Aguardar o docker subir antes de rodar)
+
+```bash
   docker exec php-server php artisan migrate
 ```
 
