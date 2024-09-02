@@ -9,6 +9,7 @@ O projeto contempla uma API laravel para cadastro de usuário, seus contatos com
 - Laravel 11 
 - JWT (para autenticação)
 - Swagger
+- PHP Unit
 
 Técnicas Utilizadas:
 
@@ -35,3 +36,11 @@ O endereço padrão é http://localhost:8080/
 ## Documentação da API
 
 A Documentação está disponivel no endpoint http://localhost:8080/api/documentation
+
+## Testes
+
+Rodar os testes através do comando 
+
+```bash
+  docker exec php-server php artisan test
+```
