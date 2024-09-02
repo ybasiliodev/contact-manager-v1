@@ -23,19 +23,16 @@ class GeoController extends Controller
     }
 
     public function showMap(Request $request) {
-        $headers = [
-            "Content-type" => "image/png",
-            "Content-Disposition" => "attachment; filename=map.png",
-            "Access-Control-Expose-Headers" => "Content-Disposition",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
-          ];
         $data = $this->geoService->getMap($request);
-        return response()->stream(function() use($data){
-            $file = fopen('php://output', 'w');
-            fwrite($file, $data);
-            fclose($file);
-          }, 200, $headers);
+        
+        if ($data['status'] == 200) {
+            return response()->stream(function() use($data){
+                $file = fopen($data['folder'], 'w');
+                fwrite($file, $data['map']);
+                fclose($file);
+            }, $data['status'], $data['headers']);
+        }
+        
+        return response()->json($data['data'], $data['status']);
     }
 }

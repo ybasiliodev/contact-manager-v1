@@ -40,7 +40,16 @@ class GeoService
         ->get('https://maps.googleapis.com/maps/api/staticmap');
 
         if ($response->status() == 200) {
-            return $response->body();
+            $returnHeaders = [
+                "Content-type" => "image/png",
+                "Content-Disposition" => "attachment; filename=map.png",
+                "Access-Control-Expose-Headers" => "Content-Disposition",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
+            ];
+
+            return ["map" => $response->body(), "headers" => $returnHeaders, "folder" => 'php://output', "status" => 200];
         }
 
         return ['data' => 'Endereço não encontrado', "status" => 404];

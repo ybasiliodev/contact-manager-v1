@@ -14,15 +14,20 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/recover', [UserController::class, 'recover']);
 
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::delete('/user', [UserController::class, 'destroy']);
-        Route::post('/user/logout', [UserController::class, 'logout']);
 
-        Route::get('/contact', [ContactController::class, 'index']);
-        Route::get('/contact/{id}', [ContactController::class, 'show']);
-        Route::get('/my-list', [ContactController::class, 'showByUser']);
-        Route::post('/contact', [ContactController::class, 'store']);
-        Route::put('/contact/{id}', [ContactController::class, 'update']);
-        Route::delete('/contact/{id}', [ContactController::class, 'destroy']);
+        Route::group(['prefix' => 'user'], function () {
+            Route::delete('/', [UserController::class, 'destroy']);
+            Route::post('/logout', [UserController::class, 'logout']);
+        });
+
+        Route::get('contact/list', [ContactController::class, 'showByUser']);
+
+        Route::group(['prefix' => 'contact'], function () {
+            Route::get('/{id}', [ContactController::class, 'show']);
+            Route::post('/', [ContactController::class, 'store']);
+            Route::put('/{id}', [ContactController::class, 'update']);
+            Route::delete('/{id}', [ContactController::class, 'destroy']);
+        });
 
         Route::group(['prefix' => 'geo'], function () {
             Route::get('/locate/{postal_code}', [GeoController::class, 'showAddress']);

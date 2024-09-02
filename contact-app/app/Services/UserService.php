@@ -8,8 +8,9 @@ use App\Models\User;
 
 class UserService
 {
-    public function __construct(AuthController $authController)
+    public function __construct(AuthController $authController, User $user)
     {
+        $this->user = $user;
         $this->authController = $authController;
     }
 
@@ -17,34 +18,37 @@ class UserService
         return $this->authController->me()->getData()->id;
     }
 
-    private function validateLoggedUserPassword($password) {
-        return $this->authController->validateUser(["email" => $object->me()->getData()->email, "password" => $password]);
-    }
-
     public function logoutUser() {
         return $this->authController->logout();
     }
 
-    public function deleteUserByPassword(Request $request, User $user) {
+    public function createUser(Request $request) {
+        $request->validate($this->user->rules(), $this->user->feedback());
+        $user = $this->user->create($request->all());
+
+        return ['message' => 'Usuário criado com sucesso', "status" => 201];
+    }
+
+    public function deleteUserByPassword(Request $request) {
         if (!$request->has('password')) {
-            return ["message" => "O campo senha é obrigatório", "status" => 204];
+            return ["message" => "O campo senha é obrigatório", "status" => 400];
         }
 
         if ($this->validateLoggedUserPassword($request->input('password'))) {
-            $user = $user->find($this->getLoggedUserId());
+            $user = $this->user->find($this->getLoggedUserId());
             $user->delete();
-            return ['message' => 'Usuário excluído com sucesso', "status" => 201];
+            return ['message' => 'Usuário excluído com sucesso', "status" => 204];
         }
 
         return ['message' => 'Senha inválida!', "status" => 404];
     }
 
-    public function getPasswordByEmail(Request $request, User $user) {
+    public function getPasswordByEmail(Request $request) {
         if (!$request->has('email')) {
-            return ["message" => "O campo e-mail é obrigatório", "status" => 204];
+            return ["message" => "O campo e-mail é obrigatório", "status" => 400];
         }
 
-        $user = $user->where('email', $request->input('email'))->get();
+        $user = $this->user->where('email', $request->input('email'))->get();
 
         if (!$user->isEmpty()) {
             return ['message' => 'recuperação de senha enviada no e-mail cadastrado', "status" => 201];
@@ -53,7 +57,7 @@ class UserService
         return ['message' => 'Usuário não encontrado', "status" => 404];
     }
 
-    public function validateUserData(Request $request, User $user) {
-        $request->validate($user->rulesUpdate(), $user->feedback());
+    private function validateLoggedUserPassword($password) {
+        return $this->authController->validateUser(["email" => $object->me()->getData()->email, "password" => $password]);
     }
 }

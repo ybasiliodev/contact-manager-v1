@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('social_number')->unique();
             $table->string('phone')->nullable(false);
             $table->string('postal_code')->nullable(false);
+            $table->string('city')->nullable(false);
+            $table->string('state')->nullable(false);
             $table->string('address')->nullable(false);
             $table->string('address_complement')->nullable();
             $table->string('lat');

@@ -14,6 +14,8 @@ class Contact extends Model
         'social_number',
         'phone',
         'postal_code',
+        'city',
+        'state',
         'address',
         'address_complement',
         'lat',
@@ -24,7 +26,25 @@ class Contact extends Model
     public function rules() {
         return [
             'name' => 'required|string|max:255',
-            'social_number' => 'required|cpf|unique:contacts,social_number',
+            'social_number' => "required|cpf|unique:contacts,social_number,$id",
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'phone' => 'required|celular_com_ddd',
+            'postal_code' => 'required|formato_cep',
+            'address' => 'required|string|max:255',
+            'address_complement' => 'string|max:255|nullable',
+            'lat' => 'required|string',
+            'lon' => 'required|string',
+            'user_id' => 'required|integer'
+        ];
+    }
+
+    public function updateRules($id) {
+        return [
+            'name' => 'required|string|max:255',
+            'social_number' => "required|cpf|unique:contacts,social_number,$id",
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
             'phone' => 'required|celular_com_ddd',
             'postal_code' => 'required|formato_cep',
             'address' => 'required|string|max:255',
@@ -45,12 +65,20 @@ class Contact extends Model
             'phone.celular_com_ddd' => 'Insira um número de telefone válido',
             'postal_code.required' => 'O campo CEP é obrigatório',
             'postal_code.formato_cep' => 'Insira um número de CEP válido',
+            'city.required' => 'O campo cidade é obrigatório',
+            'state.required' => 'O campo estado é obrigatório',
             'address.required' => 'O campo endereço é obrigatório',
             'lat.required' => 'O campo lat é obrigatório',
             'lng.required' => 'O campo lng é obrigatório',
             'user_id.required' => 'O campo user_id é obrigatório',
         ];
     }
+
+    protected $hidden = [
+        "user_id",
+        "created_at",
+        "updated_at",
+    ];
 
     public function user() {
         return $this->belongsTo('App\Models\User');
