@@ -29,22 +29,24 @@ class ContactService
     }
 
     public function createContact(Request $request) {
-        $request->request->add(['user_id' => $this->userService->getLoggedUserId()]);
-        $request->validate($this->contact->rules(), $this->contact->feedback());
+        $userId = $this->userService->getLoggedUserId();
+        $request->request->add(['user_id' => $userId]);
+        $request->validate($this->contact->rules($userId), $this->contact->feedback());
         $this->contact->create($request->all());
 
         return ["message" => "Contato Incluido com sucesso", "status" => 201];
     }
 
     public function updateContact(Request $request, $id) {
-        $request->request->add(['user_id' => $this->userService->getLoggedUserId()]);
+        $userId = $this->userService->getLoggedUserId();
+        $request->request->add(['user_id' => $userId]);
         $contact = $this->validateContact($id);
         
-        if($contact === null) {
+        if($contact->isEmpty()) {
             return ["message" => "Contato não encontrado!", "status" => 404];
         }
 
-        $request->validate($this->contact->updateRules($id), $this->contact->feedback());
+        $request->validate($this->contact->rules($userId), $this->contact->feedback());
         $contact->first()->update($request->all());
 
         return ["message" => "Contato atualizado com sucesso", "status" => 200];
@@ -53,11 +55,11 @@ class ContactService
     public function deleteContact($id) {
         $contact = $this->validateContact($id);
         
-        if($contact === null) {
+        if($contact->isEmpty()) {
             return ["message" => "Contato não encontrado!", "status" => 404];
         }
 
-        $contact->delete();
+        $contact->first->delete();
 
         return ["message" => "Contato excluido com sucesso", "status" => 204];
     }

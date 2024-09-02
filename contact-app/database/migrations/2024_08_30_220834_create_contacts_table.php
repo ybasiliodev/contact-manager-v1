@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(false);
-            $table->string('social_number')->unique();
+            $table->string('social_number');
             $table->string('phone')->nullable(false);
             $table->string('postal_code')->nullable(false);
             $table->string('city')->nullable(false);
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('lon');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unique(['social_number', 'user_id']);
             $table->timestamps();
         });
     }

@@ -23,26 +23,10 @@ class Contact extends Model
         'user_id'
     ];
 
-    public function rules() {
+    public function rules($userId) {
         return [
             'name' => 'required|string|max:255',
-            'social_number' => "required|cpf|unique:contacts,social_number",
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'phone' => 'required|celular_com_ddd',
-            'postal_code' => 'required|formato_cep',
-            'address' => 'required|string|max:255',
-            'address_complement' => 'string|max:255|nullable',
-            'lat' => 'required|string',
-            'lon' => 'required|string',
-            'user_id' => 'required|integer'
-        ];
-    }
-
-    public function updateRules($id) {
-        return [
-            'name' => 'required|string|max:255',
-            'social_number' => "required|cpf|unique:contacts,social_number,$id",
+            'social_number' => "required|cpf|unique:contacts,user_id,$userId",
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'phone' => 'required|celular_com_ddd',
