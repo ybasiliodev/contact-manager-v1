@@ -23,10 +23,17 @@ class Contact extends Model
         'user_id'
     ];
 
-    public function rules($userId) {
+    public function rules($userId, $update = 0) {
+
+        $socialNumValidation = "required|cpf|unique:contacts,social_number,null,id,user_id,$userId";
+
+        if ($update) {
+            $socialNumValidation = "required|cpf|unique:contacts,social_number,$userId,user_id";
+        }
+
         return [
             'name' => 'required|string|max:255',
-            'social_number' => "required|cpf|unique:contacts,user_id,$userId",
+            'social_number' => $socialNumValidation,
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'phone' => 'required|celular_com_ddd',

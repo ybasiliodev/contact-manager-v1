@@ -46,7 +46,7 @@ class ContactService
             return ["message" => "Contato não encontrado!", "status" => 404];
         }
 
-        $request->validate($this->contact->rules($userId), $this->contact->feedback());
+        $request->validate($this->contact->rules($userId, 1), $this->contact->feedback());
         $contact->first()->update($request->all());
 
         return ["message" => "Contato atualizado com sucesso", "status" => 200];
